@@ -3,190 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>Background Image with Random Image Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            background-color: #0CC0DF; /* Background color */
-        }
-        .container {
+            height: 100vh;
+            background-image: url('https://i.imgur.com/u9V77L5.jpeg'); /* Updated background image */
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent image repetition */
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            width: 40%;
-            max-width: 800px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow */
-            padding: 20px;
+            align-items: center;
         }
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
+        #image-container {
+            width: 800px;
+            height: 800px;
+            background-size: cover;
+            background-position: center;
             cursor: pointer;
-            border: 5px solid #0CC0DF; /* Outer blue border color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            transform: scale(0.8) translateY(10%);
         }
-        .qa-box {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .question {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        .answer {
-            font-size: 1.2em;
-            color: #555;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Text shadow */
+        #image-container.pulse {
+            transform: scale(0.8) translateY(10%) scale(1.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img id="quizImage" src="https://i.imgur.com/09bbnYp.png" alt="Quiz Image">
-        <div class="qa-box">
-            <div id="question" class="question">Click the image to get a question!</div>
-            <div id="answer" class="answer"></div>
-        </div>
-    </div>
-    
+    <div id="image-container"></div>
+
     <script>
-        const questionsAndAnswers = [
-            { question: "Which film features a young orphan who discovers he is a wizard?", answer: "Harry Potter and the Sorcerer's Stone" },
-            { question: "What movie, directed by Steven Spielberg, features a group of soldiers sent behind enemy lines to retrieve a paratrooper?", answer: "Saving Private Ryan" },
-            { question: "Which film, based on a book by J.R.R. Tolkien, follows a hobbit's journey to destroy a powerful ring?", answer: "The Lord of the Rings: The Fellowship of the Ring" },
-            { question: "In which film does a young girl named Dorothy travel to a magical land over the rainbow?", answer: "The Wizard of Oz" },
-            { question: "What film stars Brad Pitt and Edward Norton in a story about an underground fight club?", answer: "Fight Club" },
-            { question: "Which movie features a character named Jack Dawson who falls in love aboard the ill-fated RMS Titanic?", answer: "Titanic" },
-            { question: "What film follows the adventures of a group of friends who try to stop an impending apocalypse?", answer: "The World's End" },
-            { question: "Which classic film features the line 'Here's looking at you, kid'?", answer: "Casablanca" },
-            { question: "What film depicts a dystopian future where humans are hunted by robotic law enforcement?", answer: "Blade Runner" },
-            { question: "Which movie includes a famous quote, 'I’ll be back'?", answer: "The Terminator" },
-            { question: "What film, directed by Quentin Tarantino, tells multiple interwoven stories of crime?", answer: "Pulp Fiction" },
-            { question: "Which film features a character named Marty McFly who travels through time?", answer: "Back to the Future" },
-            { question: "What film includes the quote 'You talking to me?'?", answer: "Taxi Driver" },
-            { question: "Which film follows the story of a young girl's adventure in a dark, fairy-tale world during the Spanish Civil War?", answer: "Pan's Labyrinth" },
-            { question: "What film features a character named Hannibal Lecter who is a cannibalistic serial killer?", answer: "The Silence of the Lambs" },
-            { question: "Which film includes the iconic line 'Say hello to my little friend'?", answer: "Scarface" },
-            { question: "What movie stars Tom Hanks as a man with a low IQ who witnesses historical events?", answer: "Forrest Gump" },
-            { question: "Which film directed by Alfred Hitchcock features a famous shower scene?", answer: "Psycho" },
-            { question: "What film, directed by Stanley Kubrick, is about a family trapped in a haunted hotel?", answer: "The Shining" },
-            { question: "Which film features a character named Rocky Balboa who is an underdog boxer?", answer: "Rocky" },
-            { question: "What film follows the story of a group of rebels fighting against an oppressive empire?", answer: "Star Wars: Episode IV - A New Hope" },
-            { question: "Which movie features a character named Neo who learns about the true nature of his reality?", answer: "The Matrix" },
-            { question: "What film includes a character named Gollum who is obsessed with a powerful ring?", answer: "The Lord of the Rings" },
-            { question: "Which film directed by David Lynch features a surreal investigation into a woman's murder?", answer: "Blue Velvet" },
-            { question: "What film follows a group of friends who are transported into a video game world?", answer: "Jumanji" },
-            { question: "Which film features a character named Travis Bickle who is a troubled taxi driver?", answer: "Taxi Driver" },
-            { question: "What film directed by Guillermo del Toro features a young girl who enters a magical labyrinth?", answer: "Pan's Labyrinth" },
-            { question: "Which movie features the line 'I see dead people'?", answer: "The Sixth Sense" },
-            { question: "What film stars Jim Carrey as a man who finds his life is a reality TV show?", answer: "The Truman Show" },
-            { question: "Which film features a character named Darth Vader who is a dark lord of the Sith?", answer: "Star Wars" },
-            { question: "What film follows the story of a young boy who befriends an extraterrestrial?", answer: "E.T. the Extra-Terrestrial" },
-            { question: "Which film features a futuristic cop fighting against crime in a dystopian society?", answer: "RoboCop" },
-            { question: "What movie includes the iconic line 'You're gonna need a bigger boat'?", answer: "Jaws" },
-            { question: "Which film directed by Wes Anderson follows a dysfunctional family trying to find their missing son?", answer: "Rushmore" },
-            { question: "What film features a character named Captain Jack Sparrow who is a pirate?", answer: "Pirates of the Caribbean: The Curse of the Black Pearl" },
-            { question: "Which movie includes the famous line 'Life is like a box of chocolates'?", answer: "Forrest Gump" },
-            { question: "What film features a character named Ellen Ripley who battles extraterrestrial creatures?", answer: "Alien" },
-            { question: "Which film features a character named Maximus Decimus Meridius who seeks revenge in ancient Rome?", answer: "Gladiator" },
-            { question: "What movie follows the journey of a toy cowboy and space ranger in a world where toys come to life?", answer: "Toy Story" },
-            { question: "Which film features a darkly comic story about a family's interactions with extraterrestrials?", answer: "The Addams Family" },
-            { question: "What film follows a group of high school students who rebel against their oppressive principal?", answer: "Ferris Bueller's Day Off" },
-            { question: "Which film features a time-traveling scientist who helps a teenager fix his past mistakes?", answer: "Back to the Future" },
-            { question: "What movie stars Leonardo DiCaprio and Kate Winslet as lovers aboard the Titanic?", answer: "Titanic" },
-            { question: "Which film features a character named Jack Sparrow who is a pirate with a knack for adventure?", answer: "Pirates of the Caribbean" },
-            { question: "What film includes a famous line 'Here's looking at you, kid'?", answer: "Casablanca" },
-            { question: "Which film follows the adventures of a young boy who befriends an extraterrestrial?", answer: "E.T. the Extra-Terrestrial" },
-            { question: "What movie features a character named Tony Montana who becomes a drug lord?", answer: "Scarface" },
-            { question: "Which film directed by Martin Scorsese features the rise and fall of a mobster?", answer: "Goodfellas" },
-            { question: "What film features a young girl named Dorothy who is swept away to the magical land of Oz?", answer: "The Wizard of Oz" },
-            { question: "Which film features a character named Neo who learns that his reality is a simulation?", answer: "The Matrix" },
-            { question: "What movie features a heist orchestrated by a skilled thief who enters people's dreams?", answer: "Inception" },
-            { question: "Which film features a character named Michael Myers who escapes from a mental institution and terrorizes a town?", answer: "Halloween" },
-            { question: "What film follows a group of heroes who team up to save the galaxy?", answer: "Guardians of the Galaxy" },
-            { question: "Which movie features a character named Forrest Gump who narrates his life story?", answer: "Forrest Gump" },
-            { question: "What film follows the journey of a group of people who try to survive a zombie apocalypse?", answer: "Dawn of the Dead" },
-            { question: "Which film features a character named George Bailey who learns about the impact of his life?", answer: "It's a Wonderful Life" },
-            { question: "What film features a character named Paul Atreides who becomes a leader in a desert world?", answer: "Dune" },
-            { question: "Which film follows a story of an artist who paints a portrait of a mysterious woman?", answer: "Girl with a Pearl Earring" },
-            { question: "What movie includes the line 'To infinity and beyond!'?", answer: "Toy Story" },
-            { question: "Which film features a character named Truman Burbank who discovers his life is a TV show?", answer: "The Truman Show" },
-            { question: "What film features a dystopian future where the government controls everything?", answer: "V for Vendetta" },
-            { question: "Which film features a character named Maximus who seeks vengeance for the murder of his family?", answer: "Gladiator" },
-            { question: "What film features a man who can communicate with animals after a freak accident?", answer: "Dr. Dolittle" },
-            { question: "Which film features a group of rebels fighting against an oppressive empire?", answer: "Star Wars" },
-            { question: "What movie includes the iconic line 'You can't handle the truth!'?", answer: "A Few Good Men" },
-            { question: "Which film directed by Quentin Tarantino features a story of revenge?", answer: "Kill Bill" },
-            { question: "What movie features a character named John Wick who seeks revenge for the death of his dog?", answer: "John Wick" },
-            { question: "Which film features a character named Patrick Bateman who leads a double life as a serial killer?", answer: "American Psycho" },
-            { question: "What movie follows a family who discovers they have superpowers?", answer: "The Incredibles" },
-            { question: "Which film features a character named Ellen Ripley who battles extraterrestrial creatures?", answer: "Alien" },
-            { question: "What film includes the iconic line 'I'm king of the world!'?", answer: "Titanic" },
-            { question: "Which film features a character named Marty McFly who travels back in time?", answer: "Back to the Future" },
-            { question: "What movie features a group of superheroes who assemble to save the world?", answer: "The Avengers" },
-            { question: "Which film follows a man who wakes up with amnesia and tries to uncover his past?", answer: "Memento" },
-            { question: "What film features a character named Captain Jack Sparrow who embarks on a quest for a cursed treasure?", answer: "Pirates of the Caribbean" },
-            { question: "Which movie features a character named Winston Smith who rebels against a totalitarian regime?", answer: "1984" },
-            { question: "What film follows a group of misfits who work together to achieve their dreams?", answer: "The Breakfast Club" },
-            { question: "Which film features a character named Clark Griswold who tries to make Christmas perfect for his family?", answer: "National Lampoon's Christmas Vacation" },
-            { question: "What movie features a character named Andy Dufresne who escapes from prison?", answer: "The Shawshank Redemption" },
-            { question: "Which film features a story of a magical nanny who helps a family in need?", answer: "Mary Poppins" },
-            { question: "What film features a group of elite soldiers fighting against an alien invasion?", answer: "Predator" },
-            { question: "Which film follows the story of a young boy who befriends a robot?", answer: "The Iron Giant" },
-            { question: "What movie features a group of astronauts stranded on Mars trying to survive?", answer: "The Martian" },
-            { question: "Which film features a character named Ferris Bueller who skips school for a day of adventure?", answer: "Ferris Bueller's Day Off" },
-            { question: "What film includes the line 'I am Groot'?", answer: "Guardians of the Galaxy" },
-            { question: "Which movie features a character named Andy who is a toy in a world where toys come to life?", answer: "Toy Story" },
-            { question: "What film features a character named Michael Corleone who becomes the head of a crime family?", answer: "The Godfather" },
-            { question: "Which film follows the story of a scientist who creates a monster?", answer: "Frankenstein" },
-            { question: "What film features a character named Hermione Granger who is a witch attending Hogwarts School?", answer: "Harry Potter and the Sorcerer's Stone" },
-            { question: "Which movie features a story about a group of friends who try to uncover the truth behind a mysterious disappearance?", answer: "The Goonies" },
-            { question: "What film features a character named Neo who fights against a group of machines in a simulated reality?", answer: "The Matrix" },
-            { question: "Which film features a character named Marty McFly who travels to the past and future?", answer: "Back to the Future" },
-            { question: "What movie follows a scientist who creates a creature from different body parts?", answer: "Frankenstein" },
-            { question: "Which film features a character named Captain Jack Sparrow who is on a quest for a cursed treasure?", answer: "Pirates of the Caribbean: The Curse of the Black Pearl" },
-            { question: "What film follows a man who becomes a superhero after being bitten by a radioactive spider?", answer: "Spider-Man" },
-            { question: "Which movie features a story about a young woman who tries to win a beauty pageant?", answer: "Little Miss Sunshine" },
-            { question: "What film features a group of rebels fighting against an evil empire?", answer: "Star Wars" },
-            { question: "Which film follows a man who can communicate with animals after a freak accident?", answer: "Dr. Dolittle" },
-            { question: "What movie features a character named Rambo who is a Vietnam War veteran fighting against a corrupt sheriff?", answer: "First Blood" },
-            { question: "Which film features a group of friends who navigate high school and their personal lives?", answer: "Clueless" },
-            { question: "What film features a character named Tony Stark who becomes a superhero with a powered suit?", answer: "Iron Man" },
-            { question: "Which film includes a character named Indiana Jones who searches for historical artifacts?", answer: "Raiders of the Lost Ark" },
-            { question: "What movie features a story about a young woman who is a warrior in a dystopian future?", answer: "Mad Max: Fury Road" },
-            { question: "Which film follows a group of astronauts who discover a powerful alien artifact?", answer: "2001: A Space Odyssey" },
-            { question: "What film features a character named John McClane who battles terrorists in a high-rise building?", answer: "Die Hard" },
-            { question: "Which film includes a character named Clarice Starling who interviews a cannibalistic serial killer?", answer: "The Silence of the Lambs" },
-            { question: "What movie features a character named Simba who becomes king of the Pride Lands?", answer: "The Lion King" },
-            { question: "Which film features a story about a man who discovers a magical ring and becomes a hero?", answer: "The Lord of the Rings" },
-            { question: "What film follows a family who are forced to live in an underground bunker during a disaster?", answer: "10 Cloverfield Lane" }
+        const images = [
+            'https://i.postimg.cc/W4Bm7mvH/10.png',
+            'https://i.postimg.cc/nLjY7R6m/11.png',
+            'https://i.postimg.cc/L5RzcHhk/12.png',
+            'https://i.postimg.cc/QNkgpWnf/13.png',
+            'https://i.postimg.cc/XJ6F5VKM/14.png',
+            'https://i.postimg.cc/C1C8HWJR/15.png',
+            'https://i.postimg.cc/pVZ89Mp7/16.png',
+            'https://i.postimg.cc/fR30g3Bn/17.png',
+            'https://i.postimg.cc/50mHF8Nv/18.png',
+            'https://i.postimg.cc/yxQkLBR8/19.png',
+            'https://i.postimg.cc/x8K6mxN5/2.png',
+            'https://i.postimg.cc/nrPhv28s/20.png',
+            'https://i.postimg.cc/8k0pXZ3c/21.png',
+            'https://i.postimg.cc/gkLYCvFD/22.png',
+            'https://i.postimg.cc/JhxmNxZ1/23.png',
+            'https://i.postimg.cc/Kzs2VY0w/24.png',
+            'https://i.postimg.cc/nrjJtt5z/25.png',
+            'https://i.postimg.cc/2jbyYpnh/26.png',
+            'https://i.postimg.cc/4drJydpt/27.png',
+            'https://i.postimg.cc/k5YMrw4T/28.png',
+            'https://i.postimg.cc/J0ZRkLQF/29.png',
+            'https://i.postimg.cc/sfS6bXHW/3.png',
+            'https://i.postimg.cc/WzGP47NL/30.png',
+            'https://i.postimg.cc/GhjCwzgv/31.png',
+            'https://i.postimg.cc/fRThwX1p/32.png',
+            'https://i.postimg.cc/TPB8qshv/33.png',
+            'https://i.postimg.cc/bYxXk3h4/34.png',
+            'https://i.postimg.cc/zvS9NX7q/35.png',
+            'https://i.postimg.cc/qM15xFZD/36.png',
+            'https://i.postimg.cc/hj8CzZdr/37.png',
+            'https://i.postimg.cc/L5HxzkkM/38.png',
+            'https://i.postimg.cc/3JftvvdP/39.png',
+            'https://i.postimg.cc/tCjSbj8M/4.png',
+            'https://i.postimg.cc/76NVYCFt/40.png',
+            'https://i.postimg.cc/6QrVY2p6/41.png',
+            'https://i.postimg.cc/W3sGKNdG/42.png',
+            'https://i.postimg.cc/L6GzSBq6/43.png',
+            'https://i.postimg.cc/CKsDb3cz/44.png',
+            'https://i.postimg.cc/yxtSVs8r/45.png',
+            'https://i.postimg.cc/qB5KcXxX/46.png',
+            'https://i.postimg.cc/3xgDTM5n/47.png',
+            'https://i.postimg.cc/VksKSFf9/5.png',
+            'https://i.postimg.cc/kXvjXHmX/6.png',
+            'https://i.postimg.cc/bNgTj2xZ/7.png',
+            'https://i.postimg.cc/0jqf9YXw/8.png',
+            'https://i.postimg.cc/FsNZqxLt/9.png'
         ];
 
-        const img = document.getElementById('quizImage');
-        const questionElement = document.getElementById('question');
-        const answerElement = document.getElementById('answer');
+        const imageContainer = document.getElementById('image-container');
 
-        function getRandomQuestion() {
-            const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
-            return questionsAndAnswers[randomIndex];
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * images.length);
+            return images[randomIndex];
         }
 
-        img.addEventListener('click', () => {
-            const { question, answer } = getRandomQuestion();
-            questionElement.textContent = question;
-            answerElement.textContent = answer;
+        function changeImage() {
+            const imageUrl = getRandomImage();
+            imageContainer.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        function pulseEffect() {
+            imageContainer.classList.add('pulse');
+            setTimeout(() => {
+                imageContainer.classList.remove('pulse');
+            }, 300);
+        }
+
+        imageContainer.addEventListener('click', () => {
+            pulseEffect();
+            changeImage();
         });
+
+        // Initialize the image container with a random image when the page loads
+        window.onload = changeImage;
     </script>
 </body>
 </html>
