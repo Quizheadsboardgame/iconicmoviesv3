@@ -3,112 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Image with Random Image Generator</title>
+    <title>ICONIC MOVIES</title>
     <style>
-        body {
+        * {
             margin: 0;
-            height: 100vh;
-            background-image: url('https://i.imgur.com/u9V77L5.jpeg'); /* Updated background image */
-            background-size: cover; /* Ensure the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevent image repetition */
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
         }
-        #image-container {
-            width: 800px;
-            height: 800px;
-            background-size: cover;
-            background-position: center;
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            transform: scale(0.8) translateY(10%);
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
         }
-        #image-container.pulse {
-            transform: scale(0.8) translateY(10%) scale(1.1);
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
         }
     </style>
 </head>
 <body>
-    <div id="image-container"></div>
 
-    <script>
-        const images = [
-            'https://i.postimg.cc/W4Bm7mvH/10.png',
-            'https://i.postimg.cc/nLjY7R6m/11.png',
-            'https://i.postimg.cc/L5RzcHhk/12.png',
-            'https://i.postimg.cc/QNkgpWnf/13.png',
-            'https://i.postimg.cc/XJ6F5VKM/14.png',
-            'https://i.postimg.cc/C1C8HWJR/15.png',
-            'https://i.postimg.cc/pVZ89Mp7/16.png',
-            'https://i.postimg.cc/fR30g3Bn/17.png',
-            'https://i.postimg.cc/50mHF8Nv/18.png',
-            'https://i.postimg.cc/yxQkLBR8/19.png',
-            'https://i.postimg.cc/x8K6mxN5/2.png',
-            'https://i.postimg.cc/nrPhv28s/20.png',
-            'https://i.postimg.cc/8k0pXZ3c/21.png',
-            'https://i.postimg.cc/gkLYCvFD/22.png',
-            'https://i.postimg.cc/JhxmNxZ1/23.png',
-            'https://i.postimg.cc/Kzs2VY0w/24.png',
-            'https://i.postimg.cc/nrjJtt5z/25.png',
-            'https://i.postimg.cc/2jbyYpnh/26.png',
-            'https://i.postimg.cc/4drJydpt/27.png',
-            'https://i.postimg.cc/k5YMrw4T/28.png',
-            'https://i.postimg.cc/J0ZRkLQF/29.png',
-            'https://i.postimg.cc/sfS6bXHW/3.png',
-            'https://i.postimg.cc/WzGP47NL/30.png',
-            'https://i.postimg.cc/GhjCwzgv/31.png',
-            'https://i.postimg.cc/fRThwX1p/32.png',
-            'https://i.postimg.cc/TPB8qshv/33.png',
-            'https://i.postimg.cc/bYxXk3h4/34.png',
-            'https://i.postimg.cc/zvS9NX7q/35.png',
-            'https://i.postimg.cc/qM15xFZD/36.png',
-            'https://i.postimg.cc/hj8CzZdr/37.png',
-            'https://i.postimg.cc/L5HxzkkM/38.png',
-            'https://i.postimg.cc/3JftvvdP/39.png',
-            'https://i.postimg.cc/tCjSbj8M/4.png',
-            'https://i.postimg.cc/76NVYCFt/40.png',
-            'https://i.postimg.cc/6QrVY2p6/41.png',
-            'https://i.postimg.cc/W3sGKNdG/42.png',
-            'https://i.postimg.cc/L6GzSBq6/43.png',
-            'https://i.postimg.cc/CKsDb3cz/44.png',
-            'https://i.postimg.cc/yxtSVs8r/45.png',
-            'https://i.postimg.cc/qB5KcXxX/46.png',
-            'https://i.postimg.cc/3xgDTM5n/47.png',
-            'https://i.postimg.cc/VksKSFf9/5.png',
-            'https://i.postimg.cc/kXvjXHmX/6.png',
-            'https://i.postimg.cc/bNgTj2xZ/7.png',
-            'https://i.postimg.cc/0jqf9YXw/8.png',
-            'https://i.postimg.cc/FsNZqxLt/9.png'
-        ];
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="All Elite Wrestling Logo">
+    <h1>ICONIC MOVIES</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
 
-        const imageContainer = document.getElementById('image-container');
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "What is the highest-grossing film of all time (not adjusted for inflation)?", answer: '"Avatar" (2009).' },
+        { question: "Which movie features the famous line, 'Here\'s looking at you, kid'?", answer: '"Casablanca" (1942).' },
+        { question: "What film is known for the quote, 'I coulda been a contender'?", answer: '"On the Waterfront" (1954).' },
+        { question: "Who directed 'Psycho' (1960)?", answer: "Alfred Hitchcock." },
+        { question: "What 1975 film is credited with starting the summer blockbuster trend?", answer: '"Jaws."' },
+        { question: "Which 1981 film features the character Indiana Jones?", answer: '"Raiders of the Lost Ark."' },
+        { question: "What is the name of the computer in '2001: A Space Odyssey'?", answer: "HAL 9000." },
+        { question: "Which actress played Scarlett O'Hara in 'Gone with the Wind'?", answer: "Vivien Leigh." },
+        { question: "What movie features the quote, 'Life is like a box of chocolates'?", answer: '"Forrest Gump" (1994).' },
+        { question: "Who starred as Jack Dawson in 'Titanic'?", answer: "Leonardo DiCaprio." },
+        { question: "What iconic film features a character named Norman Bates?", answer: '"Psycho."' },
+        { question: "Which 1994 film is set in the fictional African country of Wakanda?", answer: '"Black Panther."' },
+        { question: "What 1985 movie features a time-traveling DeLorean?", answer: '"Back to the Future."' },
+        { question: "Who directed 'The Godfather' (1972)?", answer: "Francis Ford Coppola." },
+        { question: "What film features the line, 'You can't handle the truth!'?", answer: '"A Few Good Men" (1992).' },
+        { question: "Which Disney film features the song 'A Whole New World'?", answer: '"Aladdin" (1992).' },
+        { question: "What is the name of the wizarding school in 'Harry Potter'?", answer: "Hogwarts School of Witchcraft and Wizardry." },
+        { question: "Which film includes a character named Ferris Bueller?", answer: '"Ferris Bueller\'s Day Off" (1986).' },
+        { question: "What 1999 film features a twist ending involving the character Tyler Durden?", answer: '"Fight Club."' },
+        { question: "Which movie is famous for the quote, 'I\'ll be back'?", answer: '"The Terminator" (1984).' },
+        { question: "Who played the Joker in 'The Dark Knight' (2008)?", answer: "Heath Ledger." },
+        { question: "What is the name of the ship that sank in 'Titanic'?", answer: "RMS Titanic." },
+        { question: "What movie features a character named Andy Dufresne?", answer: '"The Shawshank Redemption" (1994).' },
+        { question: "Which 1994 animated film features a lion named Simba?", answer: '"The Lion King."' },
+        { question: "What classic film is known for the line, 'I\'m going to make him an offer he can\'t refuse'?", answer: '"The Godfather."' },
+        { question: "Which film features the character Rocky Balboa?", answer: '"Rocky" (1976).' },
+        { question: "Which movie includes the line, 'There\'s no place like home'?", answer: '"The Wizard of Oz" (1939).' },
+        { question: "What 1976 film features a character named Travis Bickle?", answer: '"Taxi Driver."' },
+        { question: "Which film features the quote, 'You talking to me?'", answer: '"Taxi Driver."' },
+        { question: "What is the name of the protagonist in 'The Matrix'?", answer: "Neo (Thomas Anderson)." },
+        { question: "Which movie features the song 'I Will Always Love You'?", answer: '"The Bodyguard" (1992).' },
+        { question: "Who directed 'Schindler\'s List' (1993)?", answer: "Steven Spielberg." },
+        { question: "What is the name of the fictional African country in 'Black Panther'?", answer: "Wakanda." },
+        { question: "Which movie features a character named Katniss Everdeen?", answer: '"The Hunger Games."' },
+        { question: "What film includes the quote, 'I\'ll have what she\'s having'?", answer: '"When Harry Met Sally..." (1989).' },
+        { question: "Who played the titular character in 'Bridget Jones\'s Diary'?", answer: "Renée Zellweger." },
+        { question: "What animated film features a character named Woody?", answer: '"Toy Story" (1995).' },
+        { question: "Which 1985 film features a group of misfit kids?", answer: '"The Goonies."' },
+        { question: "What is the name of the fictional detective in 'The Silence of the Lambs'?", answer: "Clarice Starling." },
+        { question: "Which film features the quote, 'To infinity and beyond!'", answer: '"Toy Story."' },
+        { question: "Who directed the film 'Inception' (2010)?", answer: "Christopher Nolan." },
+        { question: "Which film is known for the iconic line, 'There\'s a snake in my boot!'", answer: '"Toy Story."' },
+        { question: "Which movie features a character named Holly Golightly?", answer: '"Breakfast at Tiffany\'s" (1961).' },
+        { question: "Which movie features the song 'My Heart Will Go On'?", answer: '"Titanic."' },
+        { question: "What movie features the line, 'You had me at hello'?", answer: '"Jerry Maguire" (1996).' },
+        { question: "Who starred as the titular character in 'The Terminator'?", answer: "Arnold Schwarzenegger." },
+        { question: "Which movie is known for its famous dance scene in a diner?", answer: '"Pulp Fiction" (1994).' },
+        { question: "What is the title of the sequel to 'The Godfather'?", answer: '"The Godfather Part II" (1974).' },
+        { question: "Which animated film features the characters Mike Wazowski and James P. Sullivan?", answer: '"Monsters, Inc." (2001).' },
+        { question: "What classic film features a character named Holly Golightly?", answer: '"Breakfast at Tiffany\'s."' },
+        { question: "Which movie is known for the line, 'I\'m king of the world!'", answer: '"Titanic."' },
+        { question: "What film features the character Tyler Durden?", answer: '"Fight Club."' },
+        { question: "Which 1995 film features the song 'You’ve Got a Friend in Me'?", answer: '"Toy Story."' },
+        { question: "What is the name of the fictional town in 'Back to the Future'?", answer: "Hill Valley." },
+        { question: "Who directed 'The Silence of the Lambs'?", answer: "Jonathan Demme." },
+        { question: "What is the name of the protagonist in 'The Silence of the Lambs'?", answer: "Clarice Starling." },
+        { question: "Which film features the quote, 'You had me at hello'?", answer: '"Jerry Maguire."' },
+        { question: "What movie features a character named Jason Bourne?", answer: '"The Bourne Identity" (2002).' },
+        { question: "What film features a character named Mia Wallace?", answer: '"Pulp Fiction."' },
+        { question: "What iconic film features the character Dorothy?", answer: '"The Wizard of Oz."' },
+        { question: "Who directed the film 'Saving Private Ryan' (1998)?", answer: "Steven Spielberg." },
+        { question: "Which film includes the line, 'You can\'t stop the beat'?", answer: '"Hairspray" (2007).' },
+        { question: "What is the name of the fictional city in 'Batman'?", answer: "Gotham City." },
+        { question: "Which 1977 film features a young Luke Skywalker?", answer: '"Star Wars: Episode IV - A New Hope."' },
+        { question: "What is the title of the classic film that features the character Atticus Finch?", answer: '"To Kill a Mockingbird" (1962).' },
+        { question: "What film features a character named Elizabeth Bennet?", answer: '"Pride and Prejudice" (2005).' },
+        { question: "What is the title of the first James Bond film?", answer: '"Dr. No" (1962).' },
+        { question: "Which film features the song 'Circle of Life'?", answer: '"The Lion King."' },
+        { question: "What is the name of the main droids in 'Star Wars'?", answer: "R2-D2 and C3PO." },
+        { question: "Which movie features a character named Andy Dufresne?", answer: '"The Shawshank Redemption."' },
+        { question: "What classic movie features the line, 'I\'m going to make him an offer he can\'t refuse'?", answer: '"The Godfather."' },
+        { question: "Which film features a time machine that resembles a phone booth?", answer: '"Bill & Ted\'s Excellent Adventure."' },
+        { question: "Who directed 'Jurassic Park' (1993)?", answer: "Steven Spielberg." },
+        { question: "What 1999 film features a character named Neo?", answer: '"The Matrix."' },
+        { question: "Which film includes the line, 'You can't handle the truth!'", answer: '"A Few Good Men."' },
+        { question: "What is the name of the protagonist in 'The Lord of the Rings'?", answer: "Frodo Baggins." },
+        { question: "What movie features the song 'Time of My Life'?", answer: '"Dirty Dancing."' },
+        { question: "What movie features the quote, 'I am your father'?", answer: '"Star Wars: Episode V - The Empire Strikes Back."' },
+        { question: "Which film features a magical wardrobe that leads to another world?", answer: '"The Chronicles of Narnia: The Lion, the Witch and the Wardrobe."' },
+        { question: "Which movie features the character Lisbeth Salander?", answer: '"The Girl with the Dragon Tattoo."' },
+        { question: "What iconic film features the quote, 'You complete me'?", answer: '"Jerry Maguire."' },
+        { question: "Who directed 'The Wizard of Oz'?", answer: "Victor Fleming." },
+        { question: "What movie features a talking snowman named Olaf?", answer: '"Frozen."' },
+        { question: "Which film features the character Jack Skellington?", answer: '"The Nightmare Before Christmas."' },
+        { question: "What is the title of the classic musical that features the song 'Over the Rainbow'?", answer: '"The Wizard of Oz."' },
+    ];
 
-        function getRandomImage() {
-            const randomIndex = Math.floor(Math.random() * images.length);
-            return images[randomIndex];
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
+    }
 
-        function changeImage() {
-            const imageUrl = getRandomImage();
-            imageContainer.style.backgroundImage = `url('${imageUrl}')`;
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
         }
+    }
+</script>
 
-        function pulseEffect() {
-            imageContainer.classList.add('pulse');
-            setTimeout(() => {
-                imageContainer.classList.remove('pulse');
-            }, 300);
-        }
-
-        imageContainer.addEventListener('click', () => {
-            pulseEffect();
-            changeImage();
-        });
-
-        // Initialize the image container with a random image when the page loads
-        window.onload = changeImage;
-    </script>
 </body>
 </html>
